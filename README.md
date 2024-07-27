@@ -5,6 +5,7 @@
 
 安裝miniforge和jupyter
 步驟 1:下載miniforge 系統需要64bit
+
 wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh
 
 步驟2:安裝miniforge
