@@ -1,0 +1,48 @@
+樹莓派架站 (五) : 安裝 phpMyAdmin
+https://yhhuang1966.blogspot.com/2021/06/phpmyadmin.html
+
+在做 WordPress 網站基本設定時試圖將既有的中文資料貼至 WordPress 的頁面或文章中, 但中文部分卻出現問號, 直覺是編碼問題, 爬文發現可能是 MariaDB 裡面的編碼是 Latin-1, 應該改成 utf8_general_ci 才對, 這才想起來安裝過程好像缺了一個東西, 那就是管理資料庫的神器 phpMyAdmin. 雖然管理 WordPress 網站其實不需要這工具, 但對於寫 PHP 程式的人來說卻很有用, 所以如果是不懂網站內部技術的架站者來說, 這篇就直接跳過去. 
+
+本系列之前的文章參考 : 
+
+# 樹莓派架站 (一) : 燒錄 Raspbian 作業系統 (Buster)
+# 樹莓派架站 (二) : 安裝 Apache 2 + PHP + MariaDB
+# 樹莓派架站 (三) : 安裝 WordPress
+# 樹莓派架站 (四) : WordPress 網站基本設定
+
+以前在樹莓派上跑我自己寫的 PHP 架站機時也寫過一篇安裝 phpMyAdmin 的文章, 參考下面這篇的第 6 項, 那時還是 v4, 現在已升版至 v5 :
+
+# 在樹莓派上架設 PHP+MySQL 網站伺服器
+
+1. 下載 phpMyAdmin : 
+
+下載 phpMyAdmin 請先到下列網址 : 
+
+# https://www.phpmyadmin.net/downloads/
+
+滑鼠移到最上面那個 5.1.1 版 zip 檔下載超連結, 按右鍵點選 "複製連結網址" :
+然後切換到樹莓派 VNC Connect 畫面, 下 wget 指令後面貼上所複製的網址即可
+
+pi@raspberrypi:~ $ 
+wget https://files.phpmyadmin.net/phpMyAdmin/5.1.1/phpMyAdmin-5.1.1-all-languages.zip  
+
+2. 解壓縮 phpMyAdmin : 
+
+下載完畢後用 unzip 指令解壓縮此 zip 檔 : 
+
+pi@raspberrypi:~ $ unzip phpMyAdmin-5.1.1-all-languages.zip     
+
+檢視目錄可知解壓縮後結果是一個與主檔名相同之目錄 : 
+
+因為這目錄太長太難記, 所以用 mv 指令先將其改為 phpmyadmin, 再用 mv 
+指令將其移到 Apache 網站目錄 /var/www/html 下 
+
+pi@raspberrypi:~ $ mv phpMyAdmin-5.1.1-all-languages phpmyadmin   
+pi@raspberrypi:~ $ mv phpmyadmin /var/www/html   
+
+這樣 phpMyAdmin 就算安裝完成了.
+
+3. 登入 phpMyAdmin : 
+
+在瀏覽器網址列輸入 127.0.0.1/phpmyadmin 即可看到登入頁面, 
+打開瀏覽器輸入:localhost/phpmyadmin/

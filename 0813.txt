@@ -2,7 +2,8 @@ Raspberry Pi 筆記(60)：安裝Apache Web Server及PHP
 
 在將 Apache 安裝在 Raspberry Pi 之前，需使用以下兩個指
 令來確保系統更新到最新。
-$ sudo apt-get update && sudo apt-get upgrade 
+$ sudo apt-get update 
+  sudo apt-get upgrade 
 
 要安裝 Apache2，
 
