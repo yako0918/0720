@@ -1,0 +1,22 @@
+
+如何更新 Raspbian？
+Raspbian 是源自於 Debian 但根據 Raspberry Pi 硬體所衍生初的分支，使用 APT 作為套件管理系統。而根據 apt-get 的手冊，常用的更新指令分別說明如下：
+
+1. 更新 /etc/apt/sources.list 底下的套件清單。
+
+$ sudo apt-get update
+2. 比對套件清單決定是否需要更新，但如果要更新的套件有相依性問題，則放棄更新。
+
+$ sudo apt-get upgrade
+3. 會處理新版本套件與相依性套件的衝突，並試著安裝/移除有問題的套件來完成更新。
+
+$ sudo apt-get dist-upgrade
+4. 刪除之前因為有相依性而安裝，但現在已經不再使用的套件(非必要)。
+
+$ sudo apt-get autoremove
+5. 清除下載到 /var/cache/apt/archives 的 .deb 套件檔(非必要)
+
+$ sudo apt-get autoclean
+6. 更新核心和韌體到最新版本(可能不穩定)，因此更新前一定要先備份重要資料!
+
+$ sudo rpi-update
