@@ -1,0 +1,48 @@
+Raspberry Pi 筆記(60)：安裝Apache Web Server及PHP
+在將 Apache 安裝在 Raspberry Pi 之前，需使用以下兩個指
+令來確保系統更新到最新。
+$ sudo apt-get update && sudo apt-get upgrade 
+
+要安裝 Apache2，
+
+請在終端機輸入以下指令：
+$ sudo apt-get install apache2 -y要檢查 Apache 是​​否已啟動
+並正在運行，可以在Web 瀏覽器中輸入Raspberry Pi 的 IP 地址，
+如果服務正常，會回應一個帶有簡單文字的網頁
+
+如果您不知道 IP，可以在終端中輸入以下命令看到本機的 IP 是什麼？
+$ hostname -I
+
+如果不是用網頁確認服務狀況，也可以使用以下指令確認一下 Apache 服務是否正常執行：
+$ sudo systemctl status apache2
+
+看到綠色的字：active (running) 表示服務正常。
+
+Apache 的網頁檔案放置的路徑，預設在 /var/www /html
+，要修改或新增網頁，可以放在這個目錄內。可以使用 nano
+ 文字編輯器撰寫網頁，範例如下：
+$ nano /var/www/html/index.html
+
+[安裝PHP]
+
+至 2020 年 3 月可以安裝在樹莓派的版本是 php 7.3
+，Raspbian 的儲庫中提供了PHP 7.3可供簡單安裝，
+以下指令是將 php7.3和其他幾個套件包安裝到的 Raspberry Pi 
+中。包括php主程式等相關套件。
+
+$ sudo apt-get install php
+上述指令會安裝最新版本的 php及相關套件，包括：libapache2-mod-php7.3
+、php-common、php7.3、php7.3-cli、php7.3-common、php7.3-json、
+php7.3-opcache及php7.3-readline
+
+現在PHP已安裝到Raspberry Pi後，要寫一段 PHP 程式進行測試，
+以確保其正常工作。可以在 Apache 放置網頁的目錄 /var/www/html/ 
+增加一個 PHP的程式，測試命名為 testphp.php，可以使用文字編輯器
+進行編輯，指令如下：
+$ sudo nano /var/www/html/testphp.php
+
+檔案內容如下：
+<?php
+echo "Today's date is ".date('Y-m-d H:i:s');
+
+用Web 瀏覽器連線 Raspberry Pi 的 IP
