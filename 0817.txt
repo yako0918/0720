@@ -1,0 +1,939 @@
+
+樹莓派架站 (二) : 安裝 Apache 2 + PHP + MariaDB
+https://yhhuang1966.blogspot.com/2021/05/apache-php.html
+
+
+樹莓派架站 (二) : 安裝 Apache 2 + PHP + MariaDB
+Raspbian 作業系統安裝妥當後便可以進行 Apache 伺服器與 PHP 後端執行環境安裝了. 由於開啟了 VNC 功能, 所以這次的安裝都是透過 VNC Connect 遠端操控完成的. 
+
+我找到一篇在 Raspbian Buster 上安裝 PHP 7.3 的教學文章 :
+
+# How To Install PHP / PHP 7.3 on Debian 10 Buster
+
+但看過後覺得有點複雜, 所以還是按照前年底寫的那篇安裝程序來做 :
+
+# 樹莓派安裝 Apache2+MySQL+PHP7
+
+本系列前一篇文章參考 :
+
+# 樹莓派架站 (一) : 燒錄 Raspbian 作業系統 (Buster)
+
+
+1. 更新系統 :  
+
+pi@raspberrypi:~ $ sudo apt-get update   
+下載:1 http://archive.raspberrypi.org/debian buster InRelease [32.9 kB]   
+下載:2 http://raspbian.raspberrypi.org/raspbian buster InRelease [15.0 kB]     
+下載:3 http://archive.raspberrypi.org/debian buster/main armhf Packages [376 kB]
+取得 423 kB 用了 13s (32.1 kB/s)                                               
+正在讀取套件清單... 完成
+
+
+2. 安裝 Apache 2 伺服器 :    
+
+pi@raspberrypi:~ $ sudo apt-get install apache2  
+正在讀取套件清單... 完成
+正在重建相依關係          
+正在讀取狀態資料... 完成
+下列的額外套件將被安裝：
+  apache2-bin apache2-data apache2-utils libapr1 libaprutil1
+  libaprutil1-dbd-sqlite3 libaprutil1-ldap
+建議套件：
+  apache2-doc apache2-suexec-pristine | apache2-suexec-custom
+下列【新】套件將會被安裝：
+  apache2 apache2-bin apache2-data apache2-utils libapr1 libaprutil1
+  libaprutil1-dbd-sqlite3 libaprutil1-ldap
+升級 0 個，新安裝 8 個，移除 0 個，有 0 個未被升級。
+需要下載 1,969 kB 的套件檔。
+此操作完成之後，會多佔用 6,164 kB 的磁碟空間。
+是否繼續進行 [Y/n]？ [Y/n] Y
+下載:1 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libapr1 armhf 1.6.5-1 [83.3 kB]
+下載:2 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libaprutil1 armhf 1.6.1-4 [81.7 kB]
+下載:3 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libaprutil1-dbd-sqlite3 armhf 1.6.1-4 [17.3 kB]
+下載:4 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libaprutil1-ldap armhf 1.6.1-4 [16.3 kB]
+下載:5 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf apache2-bin armhf 2.4.38-3+deb10u4 [1,119 kB]
+下載:6 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf apache2-data all 2.4.38-3+deb10u4 [165 kB]
+下載:7 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf apache2-utils armhf 2.4.38-3+deb10u4 [235 kB]
+下載:8 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf apache2 armhf 2.4.38-3+deb10u4 [251 kB]
+取得 1,969 kB 用了 6s (333 kB/s)
+選取了原先未選的套件 libapr1:armhf。
+（讀取資料庫 ... 目前共安裝了 163690 個檔案和目錄。）
+正在準備解包 .../0-libapr1_1.6.5-1_armhf.deb……
+Unpacking libapr1:armhf (1.6.5-1) ...
+選取了原先未選的套件 libaprutil1:armhf。
+正在準備解包 .../1-libaprutil1_1.6.1-4_armhf.deb……
+Unpacking libaprutil1:armhf (1.6.1-4) ...
+選取了原先未選的套件 libaprutil1-dbd-sqlite3:armhf。
+正在準備解包 .../2-libaprutil1-dbd-sqlite3_1.6.1-4_armhf.deb……
+Unpacking libaprutil1-dbd-sqlite3:armhf (1.6.1-4) ...
+選取了原先未選的套件 libaprutil1-ldap:armhf。
+正在準備解包 .../3-libaprutil1-ldap_1.6.1-4_armhf.deb……
+Unpacking libaprutil1-ldap:armhf (1.6.1-4) ...
+選取了原先未選的套件 apache2-bin。
+正在準備解包 .../4-apache2-bin_2.4.38-3+deb10u4_armhf.deb……
+Unpacking apache2-bin (2.4.38-3+deb10u4) ...
+選取了原先未選的套件 apache2-data。
+正在準備解包 .../5-apache2-data_2.4.38-3+deb10u4_all.deb……
+Unpacking apache2-data (2.4.38-3+deb10u4) ...
+選取了原先未選的套件 apache2-utils。
+正在準備解包 .../6-apache2-utils_2.4.38-3+deb10u4_armhf.deb……
+Unpacking apache2-utils (2.4.38-3+deb10u4) ...
+選取了原先未選的套件 apache2。
+正在準備解包 .../7-apache2_2.4.38-3+deb10u4_armhf.deb……
+Unpacking apache2 (2.4.38-3+deb10u4) ...
+設定 libapr1:armhf (1.6.5-1) ...
+設定 apache2-data (2.4.38-3+deb10u4) ...
+設定 libaprutil1:armhf (1.6.1-4) ...
+設定 libaprutil1-ldap:armhf (1.6.1-4) ...
+設定 libaprutil1-dbd-sqlite3:armhf (1.6.1-4) ...
+設定 apache2-utils (2.4.38-3+deb10u4) ...
+設定 apache2-bin (2.4.38-3+deb10u4) ...
+設定 apache2 (2.4.38-3+deb10u4) ...
+Enabling module mpm_event.
+Enabling module authz_core.
+Enabling module authz_host.
+Enabling module authn_core.
+Enabling module auth_basic.
+Enabling module access_compat.
+Enabling module authn_file.
+Enabling module authz_user.
+Enabling module alias.
+Enabling module dir.
+Enabling module autoindex.
+Enabling module env.
+Enabling module mime.
+Enabling module negotiation.
+Enabling module setenvif.
+Enabling module filter.
+Enabling module deflate.
+Enabling module status.
+Enabling module reqtimeout.
+Enabling conf charset.
+Enabling conf localized-error-pages.
+Enabling conf other-vhosts-access-log.
+Enabling conf security.
+Enabling conf serve-cgi-bin.
+Enabling site 000-default.
+Created symlink /etc/systemd/system/multi-user.target.wants/apache2.service → /lib/systemd/system/apache2.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/apache-htcacheclean.service → /lib/systemd/system/apache-htcacheclean.service.
+執行 systemd (241-7~deb10u7+rpi1) 的觸發程式……
+執行 man-db (2.8.5-2) 的觸發程式……
+執行 libc-bin (2.28-10+rpi1) 的觸發程式……
+
+完成後開啟 Chromium 瀏覽器, 輸入 localhost 或 127.0.0.1 即可看到 Apache 預設網頁 :
+
+
+
+
+
+Apache 網站預設占用 80 埠, 不需要改. 
+
+
+3. 更改 Apache 2 網頁文件目錄權限 :   
+
+Apache 2 網頁路徑為 /var/www/html/, 下列指令可使 owner 與 group 成員擁有全部權限, 其餘用戶無任何權限 (需重開機才會生效) :
+
+pi@raspberrypi:~ $ sudo chown -R pi:www-data /var/www/html/   
+pi@raspberrypi:~ $ sudo chmod -R 770 /var/www/html/
+
+
+5. 安裝 PHP 7 :  
+
+pi@raspberrypi:~ $ sudo apt install php php-mbstring   
+正在讀取套件清單... 完成
+正在重建相依關係          
+正在讀取狀態資料... 完成
+下列的額外套件將被安裝：
+  libapache2-mod-php7.3 php-common php7.3 php7.3-cli php7.3-common php7.3-json
+  php7.3-mbstring php7.3-opcache php7.3-readline
+建議套件：
+  php-pear
+下列【新】套件將會被安裝：
+  libapache2-mod-php7.3 php php-common php-mbstring php7.3 php7.3-cli
+  php7.3-common php7.3-json php7.3-mbstring php7.3-opcache php7.3-readline
+升級 0 個，新安裝 11 個，移除 0 個，有 0 個未被升級。
+需要下載 3,463 kB 的套件檔。
+此操作完成之後，會多佔用 15.6 MB 的磁碟空間。
+是否繼續進行 [Y/n]？ [Y/n] Y  
+下載:1 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php-common all 2:69 [15.0 kB]
+下載:2 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.3-common armhf 7.3.27-1~deb10u1 [527 kB]
+下載:3 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.3-json armhf 7.3.27-1~deb10u1 [16.2 kB]
+下載:4 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.3-opcache armhf 7.3.27-1~deb10u1 [154 kB]
+下載:5 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.3-readline armhf 7.3.27-1~deb10u1 [10.7 kB]
+下載:6 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.3-cli armhf 7.3.27-1~deb10u1 [1,124 kB]
+下載:7 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libapache2-mod-php7.3 armhf 7.3.27-1~deb10u1 [1,082 kB]
+下載:8 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.3 all 7.3.27-1~deb10u1 [46.8 kB]
+下載:9 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php all 2:7.3+69 [5,964 B]
+下載:10 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.3-mbstring armhf 7.3.27-1~deb10u1 [477 kB]
+下載:11 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php-mbstring all 2:7.3+69 [5,996 B]
+取得 3,463 kB 用了 7s (493 kB/s)                                               
+選取了原先未選的套件 php-common。
+（讀取資料庫 ... 目前共安裝了 164393 個檔案和目錄。）
+正在準備解包 .../00-php-common_2%3a69_all.deb……
+Unpacking php-common (2:69) ...
+選取了原先未選的套件 php7.3-common。
+正在準備解包 .../01-php7.3-common_7.3.27-1~deb10u1_armhf.deb……
+Unpacking php7.3-common (7.3.27-1~deb10u1) ...
+選取了原先未選的套件 php7.3-json。
+正在準備解包 .../02-php7.3-json_7.3.27-1~deb10u1_armhf.deb……
+Unpacking php7.3-json (7.3.27-1~deb10u1) ...
+選取了原先未選的套件 php7.3-opcache。
+正在準備解包 .../03-php7.3-opcache_7.3.27-1~deb10u1_armhf.deb……
+Unpacking php7.3-opcache (7.3.27-1~deb10u1) ...
+選取了原先未選的套件 php7.3-readline。
+正在準備解包 .../04-php7.3-readline_7.3.27-1~deb10u1_armhf.deb……
+Unpacking php7.3-readline (7.3.27-1~deb10u1) ...
+選取了原先未選的套件 php7.3-cli。
+正在準備解包 .../05-php7.3-cli_7.3.27-1~deb10u1_armhf.deb……
+Unpacking php7.3-cli (7.3.27-1~deb10u1) ...
+選取了原先未選的套件 libapache2-mod-php7.3。
+正在準備解包 .../06-libapache2-mod-php7.3_7.3.27-1~deb10u1_armhf.deb……
+Unpacking libapache2-mod-php7.3 (7.3.27-1~deb10u1) ...
+選取了原先未選的套件 php7.3。
+正在準備解包 .../07-php7.3_7.3.27-1~deb10u1_all.deb……
+Unpacking php7.3 (7.3.27-1~deb10u1) ...
+選取了原先未選的套件 php。
+正在準備解包 .../08-php_2%3a7.3+69_all.deb……
+Unpacking php (2:7.3+69) ...
+選取了原先未選的套件 php7.3-mbstring。
+正在準備解包 .../09-php7.3-mbstring_7.3.27-1~deb10u1_armhf.deb……
+Unpacking php7.3-mbstring (7.3.27-1~deb10u1) ...
+選取了原先未選的套件 php-mbstring。
+正在準備解包 .../10-php-mbstring_2%3a7.3+69_all.deb……
+Unpacking php-mbstring (2:7.3+69) ...
+設定 php-common (2:69) ...
+Created symlink /etc/systemd/system/timers.target.wants/phpsessionclean.timer → /lib/systemd/system/phpsessionclean.timer.
+設定 php7.3-common (7.3.27-1~deb10u1) ...
+
+Creating config file /etc/php/7.3/mods-available/calendar.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/ctype.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/exif.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/fileinfo.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/ftp.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/gettext.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/iconv.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/pdo.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/phar.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/posix.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/shmop.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/sockets.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/sysvmsg.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/sysvsem.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/sysvshm.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/tokenizer.ini with new version
+設定 php7.3-opcache (7.3.27-1~deb10u1) ...
+
+Creating config file /etc/php/7.3/mods-available/opcache.ini with new version
+設定 php7.3-mbstring (7.3.27-1~deb10u1) ...
+
+Creating config file /etc/php/7.3/mods-available/mbstring.ini with new version
+設定 php7.3-json (7.3.27-1~deb10u1) ...
+
+Creating config file /etc/php/7.3/mods-available/json.ini with new version
+設定 php7.3-readline (7.3.27-1~deb10u1) ...
+
+Creating config file /etc/php/7.3/mods-available/readline.ini with new version
+設定 php-mbstring (2:7.3+69) ...
+設定 php7.3-cli (7.3.27-1~deb10u1) ...
+update-alternatives: 在自動模式下以 /usr/bin/php7.3 來提供 /usr/bin/php (php)
+update-alternatives: 在自動模式下以 /usr/bin/phar7.3 來提供 /usr/bin/phar (phar)
+update-alternatives: 在自動模式下以 /usr/bin/phar.phar7.3 來提供 /usr/bin/phar.phar (phar.phar)
+
+Creating config file /etc/php/7.3/cli/php.ini with new version
+設定 libapache2-mod-php7.3 (7.3.27-1~deb10u1) ...
+
+Creating config file /etc/php/7.3/apache2/php.ini with new version
+Module mpm_event disabled.
+Enabling module mpm_prefork.
+apache2_switch_mpm Switch to prefork
+apache2_invoke: Enable module php7.3
+設定 php7.3 (7.3.27-1~deb10u1) ...
+設定 php (2:7.3+69) ...
+執行 man-db (2.8.5-2) 的觸發程式……
+
+完成後先用 mv 指令將 Apache 2 預設網站目錄 /var/www/html/ 底下的預設首頁 index.html 改名為 index_apache.html, 然後用 echo 輸出 執行 phpinfo() 指令的網頁到 index.php :
+
+pi@raspberrypi:~ $ sudo mv /var/www/html/index.html /var/www/html/index_appache.html   
+pi@raspberrypi:~ $ echo "<?php phpinfo ();?>" > /var/www/html/index.php
+
+然後再到瀏覽器重新整理 loclhost 網站就會看到 index.php 呈現的 phpinfo() 結果了 :
+
+
+
+
+
+到此 Apache + PHP 就安裝完畢了, 剩下 MySQL 資料庫. 再用 df -h 檢視 SD 卡空間 :
+
+pi@raspberrypi:~ $ df -h  
+檔案系統        容量  已用  可用 已用% 掛載點
+/dev/root        29G  7.6G   21G   28% /
+devtmpfs        183M     0  183M    0% /dev
+tmpfs           216M   19M  197M    9% /dev/shm
+tmpfs           216M  3.2M  212M    2% /run
+tmpfs           5.0M  4.0K  5.0M    1% /run/lock
+tmpfs           216M     0  216M    0% /sys/fs/cgroup
+/dev/mmcblk0p1  253M   48M  205M   19% /boot
+tmpfs            44M  4.0K   44M    1% /run/user/1000
+
+看起來沒用掉多少啊!
+
+
+5. 安裝 MariaDB (MySQL) 資料庫 :  
+
+之前安裝 MySQL 的指令現在已不管用, 因為 mysql-server 與 php-mysql 這兩個安裝套件已經從樹莓派套件清單中移除了, 結果如下 :
+
+pi@raspberrypi:~ $ sudo apt-get install mysql-server php-mysql 
+正在讀取套件清單... 完成
+正在重建相依關係          
+正在讀取狀態資料... 完成
+無法取得套件 mysql-server，但它卻被其它的套件引用了。
+這意味著這個套件可能已經消失了、被廢棄了，或是只能由其他的來源取得
+然而，下列的套件取代了它：
+  mariadb-server-10.0
+
+E: 套件 mysql-server 沒有可安裝的候選版本
+
+這可能是 MySQL 被甲骨文買走後, 繼續使用 MySQL 商標可能會被告吧? MySQL 原開發團隊出走推出相容版的開源 MariaDB, 招牌換了, 但其實操作指令還是維持不變, 仍舊使用 mysql 這字眼. 總之現在要改用它的完全相容版本 MariaDB, 安裝方法參考 :
+
+# How To Install MariaDB on Debian 10 Buster
+# How to Install phpMyAdmin on Debian 10 (Buster)
+# How to Install MariaDB on Raspberry Pi? (MySQL Server)
+
+pi@raspberrypi:~ $ sudo apt -y install mariadb-server mariadb-client
+正在讀取套件清單... 完成
+正在重建相依關係          
+正在讀取狀態資料... 完成
+下列的額外套件將被安裝：
+  galera-3 gawk libcgi-fast-perl libcgi-pm-perl libconfig-inifiles-perl
+  libdbd-mysql-perl libdbi-perl libencode-locale-perl libfcgi-perl
+  libhtml-parser-perl libhtml-tagset-perl libhtml-template-perl
+  libhttp-date-perl libhttp-message-perl libio-html-perl
+  liblwp-mediatypes-perl libreadline5 libsigsegv2 libterm-readkey-perl
+  libtimedate-perl liburi-perl mariadb-client-10.3 mariadb-client-core-10.3
+  mariadb-server-10.3 mariadb-server-core-10.3 socat
+建議套件：
+  gawk-doc libclone-perl libmldbm-perl libnet-daemon-perl
+  libsql-statement-perl libdata-dump-perl libipc-sharedcache-perl libwww-perl
+  mailx mariadb-test tinyca
+下列【新】套件將會被安裝：
+  galera-3 gawk libcgi-fast-perl libcgi-pm-perl libconfig-inifiles-perl
+  libdbd-mysql-perl libdbi-perl libencode-locale-perl libfcgi-perl
+  libhtml-parser-perl libhtml-tagset-perl libhtml-template-perl
+  libhttp-date-perl libhttp-message-perl libio-html-perl
+  liblwp-mediatypes-perl libreadline5 libsigsegv2 libterm-readkey-perl
+  libtimedate-perl liburi-perl mariadb-client mariadb-client-10.3
+  mariadb-client-core-10.3 mariadb-server mariadb-server-10.3
+  mariadb-server-core-10.3 socat
+升級 0 個，新安裝 28 個，移除 0 個，有 0 個未被升級。
+需要下載 18.1 MB 的套件檔。
+此操作完成之後，會多佔用 150 MB 的磁碟空間。
+下載:1 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libsigsegv2 armhf 2.12-2 [32.3 kB]
+下載:2 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf gawk armhf 1:4.2.1+dfsg-1 [590 kB]
+下載:3 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf galera-3 armhf 25.3.25-2 [811 kB]
+下載:4 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libdbi-perl armhf 1.642-1+deb10u2 [767 kB]
+下載:5 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libconfig-inifiles-perl all 3.000001-1 [51.9 kB]
+下載:6 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libreadline5 armhf 5.2+dfsg-3 [103 kB]
+下載:7 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf mariadb-client-core-10.3 armhf 1:10.3.27-0+deb10u1 [4,712 kB]
+下載:8 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf mariadb-client-10.3 armhf 1:10.3.27-0+deb10u1 [984 kB]
+下載:9 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf mariadb-server-core-10.3 armhf 1:10.3.27-0+deb10u1 [5,209 kB]
+下載:10 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf socat armhf 1.7.3.2-2 [324 kB]
+下載:11 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf mariadb-server-10.3 armhf 1:10.3.27-0+deb10u1 [3,563 kB]
+下載:12 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libhtml-tagset-perl all 3.20-3 [12.7 kB]
+下載:13 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf liburi-perl all 1.76-1 [89.9 kB]
+下載:14 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libhtml-parser-perl armhf 3.72-3+b2 [101 kB]
+下載:15 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libcgi-pm-perl all 4.40-1 [222 kB]
+下載:16 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libfcgi-perl armhf 0.78-2+b2 [35.0 kB]
+下載:17 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libcgi-fast-perl all 1:2.13-1 [11.4 kB]
+下載:18 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libdbd-mysql-perl armhf 4.050-2 [114 kB]
+下載:19 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libencode-locale-perl all 1.05-1 [13.7 kB]
+下載:20 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libhtml-template-perl all 2.97-1 [66.0 kB]
+下載:21 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libtimedate-perl all 2.3000-2+deb10u1 [38.1 kB]
+下載:22 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libhttp-date-perl all 6.02-1 [10.7 kB]
+下載:23 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libio-html-perl all 1.001-1 [17.6 kB]
+下載:24 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf liblwp-mediatypes-perl all 6.02-1 [22.1 kB]
+下載:25 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libhttp-message-perl all 6.18-1 [77.8 kB]
+下載:26 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libterm-readkey-perl armhf 2.38-1 [26.3 kB]
+下載:27 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf mariadb-client all 1:10.3.27-0+deb10u1 [31.1 kB]
+下載:28 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf mariadb-server all 1:10.3.27-0+deb10u1 [31.2 kB]
+取得 18.1 MB 用了 25s (716 kB/s)                                               
+正在預先設定套件 ...
+選取了原先未選的套件 libsigsegv2:armhf。
+（讀取資料庫 ... 目前共安裝了 164545 個檔案和目錄。）
+正在準備解包 .../libsigsegv2_2.12-2_armhf.deb……
+Unpacking libsigsegv2:armhf (2.12-2) ...
+設定 libsigsegv2:armhf (2.12-2) ...
+選取了原先未選的套件 gawk。
+（讀取資料庫 ... 目前共安裝了 164554 個檔案和目錄。）
+正在準備解包 .../00-gawk_1%3a4.2.1+dfsg-1_armhf.deb……
+Unpacking gawk (1:4.2.1+dfsg-1) ...
+選取了原先未選的套件 galera-3。
+正在準備解包 .../01-galera-3_25.3.25-2_armhf.deb……
+Unpacking galera-3 (25.3.25-2) ...
+選取了原先未選的套件 libdbi-perl:armhf。
+正在準備解包 .../02-libdbi-perl_1.642-1+deb10u2_armhf.deb……
+Unpacking libdbi-perl:armhf (1.642-1+deb10u2) ...
+選取了原先未選的套件 libconfig-inifiles-perl。
+正在準備解包 .../03-libconfig-inifiles-perl_3.000001-1_all.deb……
+Unpacking libconfig-inifiles-perl (3.000001-1) ...
+選取了原先未選的套件 libreadline5:armhf。
+正在準備解包 .../04-libreadline5_5.2+dfsg-3_armhf.deb……
+Unpacking libreadline5:armhf (5.2+dfsg-3) ...
+選取了原先未選的套件 mariadb-client-core-10.3。
+正在準備解包 .../05-mariadb-client-core-10.3_1%3a10.3.27-0+deb10u1_armhf.deb……
+Unpacking mariadb-client-core-10.3 (1:10.3.27-0+deb10u1) ...
+選取了原先未選的套件 mariadb-client-10.3。
+正在準備解包 .../06-mariadb-client-10.3_1%3a10.3.27-0+deb10u1_armhf.deb……
+Unpacking mariadb-client-10.3 (1:10.3.27-0+deb10u1) ...
+選取了原先未選的套件 mariadb-server-core-10.3。
+正在準備解包 .../07-mariadb-server-core-10.3_1%3a10.3.27-0+deb10u1_armhf.deb……
+Unpacking mariadb-server-core-10.3 (1:10.3.27-0+deb10u1) ...
+選取了原先未選的套件 socat。
+正在準備解包 .../08-socat_1.7.3.2-2_armhf.deb……
+Unpacking socat (1.7.3.2-2) ...
+選取了原先未選的套件 mariadb-server-10.3。
+正在準備解包 .../09-mariadb-server-10.3_1%3a10.3.27-0+deb10u1_armhf.deb……
+Unpacking mariadb-server-10.3 (1:10.3.27-0+deb10u1) ...
+選取了原先未選的套件 libhtml-tagset-perl。
+正在準備解包 .../10-libhtml-tagset-perl_3.20-3_all.deb……
+Unpacking libhtml-tagset-perl (3.20-3) ...
+選取了原先未選的套件 liburi-perl。
+正在準備解包 .../11-liburi-perl_1.76-1_all.deb……
+Unpacking liburi-perl (1.76-1) ...
+選取了原先未選的套件 libhtml-parser-perl。
+正在準備解包 .../12-libhtml-parser-perl_3.72-3+b2_armhf.deb……
+Unpacking libhtml-parser-perl (3.72-3+b2) ...
+選取了原先未選的套件 libcgi-pm-perl。
+正在準備解包 .../13-libcgi-pm-perl_4.40-1_all.deb……
+Unpacking libcgi-pm-perl (4.40-1) ...
+選取了原先未選的套件 libfcgi-perl。
+正在準備解包 .../14-libfcgi-perl_0.78-2+b2_armhf.deb……
+Unpacking libfcgi-perl (0.78-2+b2) ...
+選取了原先未選的套件 libcgi-fast-perl。
+正在準備解包 .../15-libcgi-fast-perl_1%3a2.13-1_all.deb……
+Unpacking libcgi-fast-perl (1:2.13-1) ...
+選取了原先未選的套件 libdbd-mysql-perl:armhf。
+正在準備解包 .../16-libdbd-mysql-perl_4.050-2_armhf.deb……
+Unpacking libdbd-mysql-perl:armhf (4.050-2) ...
+選取了原先未選的套件 libencode-locale-perl。
+正在準備解包 .../17-libencode-locale-perl_1.05-1_all.deb……
+Unpacking libencode-locale-perl (1.05-1) ...
+選取了原先未選的套件 libhtml-template-perl。
+正在準備解包 .../18-libhtml-template-perl_2.97-1_all.deb……
+Unpacking libhtml-template-perl (2.97-1) ...
+選取了原先未選的套件 libtimedate-perl。
+正在準備解包 .../19-libtimedate-perl_2.3000-2+deb10u1_all.deb……
+Unpacking libtimedate-perl (2.3000-2+deb10u1) ...
+選取了原先未選的套件 libhttp-date-perl。
+正在準備解包 .../20-libhttp-date-perl_6.02-1_all.deb……
+Unpacking libhttp-date-perl (6.02-1) ...
+選取了原先未選的套件 libio-html-perl。
+正在準備解包 .../21-libio-html-perl_1.001-1_all.deb……
+Unpacking libio-html-perl (1.001-1) ...
+選取了原先未選的套件 liblwp-mediatypes-perl。
+正在準備解包 .../22-liblwp-mediatypes-perl_6.02-1_all.deb……
+Unpacking liblwp-mediatypes-perl (6.02-1) ...
+選取了原先未選的套件 libhttp-message-perl。
+正在準備解包 .../23-libhttp-message-perl_6.18-1_all.deb……
+Unpacking libhttp-message-perl (6.18-1) ...
+選取了原先未選的套件 libterm-readkey-perl。
+正在準備解包 .../24-libterm-readkey-perl_2.38-1_armhf.deb……
+Unpacking libterm-readkey-perl (2.38-1) ...
+選取了原先未選的套件 mariadb-client。
+正在準備解包 .../25-mariadb-client_1%3a10.3.27-0+deb10u1_all.deb……
+Unpacking mariadb-client (1:10.3.27-0+deb10u1) ...
+選取了原先未選的套件 mariadb-server。
+正在準備解包 .../26-mariadb-server_1%3a10.3.27-0+deb10u1_all.deb……
+Unpacking mariadb-server (1:10.3.27-0+deb10u1) ...
+設定 libconfig-inifiles-perl (3.000001-1) ...
+設定 libreadline5:armhf (5.2+dfsg-3) ...
+設定 gawk (1:4.2.1+dfsg-1) ...
+設定 libhtml-tagset-perl (3.20-3) ...
+設定 liblwp-mediatypes-perl (6.02-1) ...
+設定 libencode-locale-perl (1.05-1) ...
+設定 socat (1.7.3.2-2) ...
+設定 mariadb-server-core-10.3 (1:10.3.27-0+deb10u1) ...
+設定 libio-html-perl (1.001-1) ...
+設定 galera-3 (25.3.25-2) ...
+設定 libtimedate-perl (2.3000-2+deb10u1) ...
+設定 mariadb-client-core-10.3 (1:10.3.27-0+deb10u1) ...
+設定 libfcgi-perl (0.78-2+b2) ...
+設定 libterm-readkey-perl (2.38-1) ...
+設定 liburi-perl (1.76-1) ...
+設定 libdbi-perl:armhf (1.642-1+deb10u2) ...
+設定 libhttp-date-perl (6.02-1) ...
+設定 mariadb-client-10.3 (1:10.3.27-0+deb10u1) ...
+設定 libdbd-mysql-perl:armhf (4.050-2) ...
+設定 libhtml-parser-perl (3.72-3+b2) ...
+設定 mariadb-server-10.3 (1:10.3.27-0+deb10u1) ...
+Created symlink /etc/systemd/system/mysql.service → /lib/systemd/system/mariadb.service.
+Created symlink /etc/systemd/system/mysqld.service → /lib/systemd/system/mariadb.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/mariadb.service → /lib/systemd/system/mariadb.service.
+設定 libhttp-message-perl (6.18-1) ...
+設定 mariadb-client (1:10.3.27-0+deb10u1) ...
+設定 libcgi-pm-perl (4.40-1) ...
+設定 libhtml-template-perl (2.97-1) ...
+設定 mariadb-server (1:10.3.27-0+deb10u1) ...
+設定 libcgi-fast-perl (1:2.13-1) ...
+執行 systemd (241-7~deb10u7+rpi1) 的觸發程式……
+執行 man-db (2.8.5-2) 的觸發程式……
+執行 libc-bin (2.28-10+rpi1) 的觸發程式……
+pi@raspberrypi:~ $ 
+
+這樣就安裝完成了, 可以用 systemctl status mariadb 指令檢查 MariaDB 伺服器是否有在跑 : 
+
+pi@raspberrypi:~ $ systemctl status mariadb --no-pager   
+● mariadb.service - MariaDB 10.3.27 database server
+   Loaded: loaded (/lib/systemd/system/mariadb.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2021-05-20 14:14:49 CST; 19min ago
+     Docs: man:mysqld(8)
+           https://mariadb.com/kb/en/library/systemd/
+ Main PID: 11110 (mysqld)
+   Status: "Taking your SQL requests now..."
+    Tasks: 30 (limit: 877)
+   CGroup: /system.slice/mariadb.service
+           └─11110 /usr/sbin/mysqld
+
+ 5月 20 14:15:10 raspberrypi /etc/mysql/debian-start[11148]: Phase 6/7: Checking and upgrading tables
+ 5月 20 14:15:10 raspberrypi /etc/mysql/debian-start[11148]: Running 'mysqlcheck' with connection arguments: --socket='/var/run/mysqld/m…ld.sock'
+ 5月 20 14:15:10 raspberrypi /etc/mysql/debian-start[11148]: # Connecting to localhost...
+ 5月 20 14:15:10 raspberrypi /etc/mysql/debian-start[11148]: # Disconnecting from localhost...
+ 5月 20 14:15:10 raspberrypi /etc/mysql/debian-start[11148]: Processing databases
+ 5月 20 14:15:10 raspberrypi /etc/mysql/debian-start[11148]: information_schema
+ 5月 20 14:15:10 raspberrypi /etc/mysql/debian-start[11148]: performance_schema
+ 5月 20 14:15:10 raspberrypi /etc/mysql/debian-start[11148]: Phase 7/7: Running 'FLUSH PRIVILEGES'
+ 5月 20 14:15:10 raspberrypi /etc/mysql/debian-start[11148]: OK
+ 5月 20 14:15:11 raspberrypi /etc/mysql/debian-start[11201]: Triggering myisam-recover for all MyISAM tables and aria-recover for all Aria tables
+Hint: Some lines were ellipsized, use -l to show in full.
+
+由 Active: active(running) 可知 MariaDB 已正常執行, 注意, 一定要加 --no-page 參數, 否則因為 systemctl 指令報表很長 (21 頁), 按 Ctrl-C 無反應會以為是當機了, 這時須按 q 才會跳出來.
+
+接下來必須執行一個 MariaDB 內建的程式 mysql_secure_installation 來進行安全性設定, 它會要求設定 MariaDB 伺服器登入密碼, 並詢問 5 個 Yes/no 問題, 全部回答 y 即可 :
+
+pi@raspberrypi:~ $ sudo mysql_secure_installation    
+
+NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
+      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
+
+In order to log into MariaDB to secure it, we'll need the current
+password for the root user.  If you've just installed MariaDB, and
+you haven't set the root password yet, the password will be blank,
+so you should just press enter here.
+
+Enter current password for root (enter for none): 
+OK, successfully used password, moving on...
+
+Setting the root password ensures that nobody can log into the MariaDB
+root user without the proper authorisation.
+
+Set root password? [Y/n] Y  
+New password:   (設定 MariaDB 伺服器登入密碼)
+Re-enter new password:    (確認  MariaDB 伺服器登入密碼)
+Password updated successfully!
+Reloading privilege tables..
+ ... Success!
+
+
+By default, a MariaDB installation has an anonymous user, allowing anyone
+to log into MariaDB without having to have a user account created for
+them.  This is intended only for testing, and to make the installation
+go a bit smoother.  You should remove them before moving into a
+production environment.
+
+Remove anonymous users? [Y/n] y     (移除匿名使用者)
+ ... Success!
+
+Normally, root should only be allowed to connect from 'localhost'.  This
+ensures that someone cannot guess at the root password from the network.
+
+Disallow root login remotely? [Y/n] y    (不允許遠端 root 登入)
+ ... Success!
+
+By default, MariaDB comes with a database named 'test' that anyone can
+access.  This is also intended only for testing, and should be removed
+before moving into a production environment.
+
+Remove test database and access to it? [Y/n] y   (移除 test 資料庫)
+ - Dropping test database...
+ ... Success!
+ - Removing privileges on test database...
+ ... Success!
+
+Reloading the privilege tables will ensure that all changes made so far
+will take effect immediately.
+
+Reload privilege tables now? [Y/n] y   (重新載入特權資料表)
+ ... Success!
+
+Cleaning up...
+
+All done!  If you've completed all of the above steps, your MariaDB
+installation should now be secure.
+
+Thanks for using MariaDB!
+pi@raspberrypi:~ $ 
+
+最後須進入 MariaDB Shell 下一些指令讓 root 使用者也像一般使用者一樣必須使用密碼才能登入伺服器, 而不是預設直接進入 (提高安全性) :
+
+pi@raspberrypi:~ $ sudo mysql -u root      (現在 root 使育者可直接進入伺服器)
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 57
+Server version: 10.3.27-MariaDB-0+deb10u1 Raspbian 10
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> UPDATE mysql.user SET plugin = 'mysql_native_password' WHERE User = 'root';    (更新 root 使用者的認證方式為使用密碼登入)
+Query OK, 1 row affected (0.024 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [(none)]> FLUSH PRIVILEGES;     (寫回權限設定)
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [(none)]> QUIT;       (跳出)
+Bye
+
+經過這樣設定之後想再用 root 直接登入就行不通了, 會被系統拒絕 : 
+
+pi@raspberrypi:~ $ sudo mysql -u root      
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+
+必須帶 -p 參數以密碼登入, 這時就會出現 Enter Password 提示輸入密碼 : 
+
+pi@raspberrypi:~ $ sudo mysql -u root -p     (帶 -p 參數)  
+Enter password:      (輸入上面執行 sudo mysql_secure_installation 時設定的密碼)
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 61
+Server version: 10.3.27-MariaDB-0+deb10u1 Raspbian 10
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> QUIT
+Bye
+
+這樣就完成 MariaDB 伺服器的安全性設定了 (主要就是閹掉 root 的無上權柄). 
+
+
+6. 安裝 phpMyAdmin 資料庫管理軟體 :  
+
+這部分還是照這篇 "樹莓派安裝 Apache2+MySQL+PHP7" 的第七項來做 : 
+
+安裝之前必須先授予樹莓派帳號 pi'@'localhost 以與 root 相同之密碼存取資料庫之權限, 以免中途出現 Access denied 錯誤 : 
+
+pi@raspberrypi:~ $ sudo mysql -u root -p  
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 64
+Server version: 10.3.27-MariaDB-0+deb10u1 Raspbian 10
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> GRANT ALL PRIVILEGES ON mydb.* TO 'pi'@'localhost' IDENTIFIED BY 'mysql';    
+Query OK, 0 rows affected (0.143 sec)
+
+MariaDB [(none)]> QUIT   
+Bye
+pi@raspberrypi:~ $ 
+
+然後就可以開始安裝 phpMyAdmin 了 : 
+
+pi@raspberrypi:~ $ sudo apt-get install phpmyadmin    
+正在讀取套件清單... 完成
+正在重建相依關係          
+正在讀取狀態資料... 完成
+下列的額外套件將被安裝：
+  dbconfig-common dbconfig-mysql libmcrypt4 libzip4 php-bz2 php-curl php-gd php-mysql php-pear php-php-gettext php-phpseclib php-tcpdf php-xml
+  php-zip php7.1-common php7.1-mcrypt php7.3-bz2 php7.3-curl php7.3-gd php7.3-mysql php7.3-xml php7.3-zip
+建議套件：
+  libmcrypt-dev mcrypt php-libsodium php-gmp php-imagick
+下列【新】套件將會被安裝：
+  dbconfig-common dbconfig-mysql libmcrypt4 libzip4 php-bz2 php-curl php-gd php-mysql php-pear php-php-gettext php-phpseclib php-tcpdf php-xml
+  php-zip php7.1-common php7.1-mcrypt php7.3-bz2 php7.3-curl php7.3-gd php7.3-mysql php7.3-xml php7.3-zip phpmyadmin
+升級 0 個，新安裝 23 個，移除 0 個，有 0 個未被升級。
+需要下載 13.7 MB 的套件檔。
+此操作完成之後，會多佔用 55.9 MB 的磁碟空間。
+是否繼續進行 [Y/n]？ [Y/n] y    
+下載:2 http://raspbian.raspberrypi.org/raspbian buster/main armhf dbconfig-mysql all 2.0.11+deb10u1 [1,096 B]
+下載:1 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf dbconfig-common all 2.0.11+deb10u1 [599 kB]                               
+下載:3 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libmcrypt4 armhf 2.5.8-3.4 [64.2 kB]                                      
+下載:4 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf libzip4 armhf 1.5.1-4 [45.4 kB]                                           
+下載:5 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.3-bz2 armhf 7.3.27-1~deb10u1 [8,700 B]                               
+下載:6 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php-bz2 all 2:7.3+69 [5,988 B]                                            
+下載:7 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.3-curl armhf 7.3.27-1~deb10u1 [26.7 kB]                              
+下載:8 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php-curl all 2:7.3+69 [5,992 B]                                           
+下載:9 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.3-gd armhf 7.3.27-1~deb10u1 [22.6 kB]                                
+下載:10 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php-gd all 2:7.3+69 [5,984 B]                                            
+下載:11 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.3-mysql armhf 7.3.27-1~deb10u1 [96.6 kB]                            
+下載:12 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php-mysql all 2:7.3+69 [5,992 B]                                         
+下載:13 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.3-xml armhf 7.3.27-1~deb10u1 [85.5 kB]                              
+下載:14 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php-xml all 2:7.3+69 [6,012 B]                                           
+下載:15 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php-pear all 1:1.10.6+submodules+notgz-1.1+deb10u2 [285 kB]              
+下載:16 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php-php-gettext all 1.0.12-0.1 [16.4 kB]                                 
+下載:17 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php-phpseclib all 2.0.14-1 [184 kB]                                      
+下載:18 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php-tcpdf all 6.2.26+dfsg-1 [7,831 kB]                                   
+下載:19 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.3-zip armhf 7.3.27-1~deb10u1 [17.7 kB]                              
+下載:20 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php-zip all 2:7.3+69 [5,988 B]                                           
+下載:21 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.1-common armhf 7.1.20-1+b2 [480 kB]                                 
+下載:22 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf php7.1-mcrypt armhf 7.1.20-1+b2 [12.6 kB]                                
+下載:23 http://mirror.ossplanet.net/raspbian/raspbian buster/main armhf phpmyadmin all 4:4.6.6-5 [3,913 kB]                                      
+取得 13.7 MB 用了 28s (493 kB/s)                                                                                                                 
+正在預先設定套件 ...
+選取了原先未選的套件 dbconfig-common。
+（讀取資料庫 ... 目前共安裝了 165541 個檔案和目錄。）
+正在準備解包 .../00-dbconfig-common_2.0.11+deb10u1_all.deb……
+Unpacking dbconfig-common (2.0.11+deb10u1) ...
+選取了原先未選的套件 dbconfig-mysql。
+正在準備解包 .../01-dbconfig-mysql_2.0.11+deb10u1_all.deb……
+Unpacking dbconfig-mysql (2.0.11+deb10u1) ...
+選取了原先未選的套件 libmcrypt4。
+正在準備解包 .../02-libmcrypt4_2.5.8-3.4_armhf.deb……
+Unpacking libmcrypt4 (2.5.8-3.4) ...
+選取了原先未選的套件 libzip4:armhf。
+正在準備解包 .../03-libzip4_1.5.1-4_armhf.deb……
+Unpacking libzip4:armhf (1.5.1-4) ...
+選取了原先未選的套件 php7.3-bz2。
+正在準備解包 .../04-php7.3-bz2_7.3.27-1~deb10u1_armhf.deb……
+Unpacking php7.3-bz2 (7.3.27-1~deb10u1) ...
+選取了原先未選的套件 php-bz2。
+正在準備解包 .../05-php-bz2_2%3a7.3+69_all.deb……
+Unpacking php-bz2 (2:7.3+69) ...
+選取了原先未選的套件 php7.3-curl。
+正在準備解包 .../06-php7.3-curl_7.3.27-1~deb10u1_armhf.deb……
+Unpacking php7.3-curl (7.3.27-1~deb10u1) ...
+選取了原先未選的套件 php-curl。
+正在準備解包 .../07-php-curl_2%3a7.3+69_all.deb……
+Unpacking php-curl (2:7.3+69) ...
+選取了原先未選的套件 php7.3-gd。
+正在準備解包 .../08-php7.3-gd_7.3.27-1~deb10u1_armhf.deb……
+Unpacking php7.3-gd (7.3.27-1~deb10u1) ...
+選取了原先未選的套件 php-gd。
+正在準備解包 .../09-php-gd_2%3a7.3+69_all.deb……
+Unpacking php-gd (2:7.3+69) ...
+選取了原先未選的套件 php7.3-mysql。
+正在準備解包 .../10-php7.3-mysql_7.3.27-1~deb10u1_armhf.deb……
+Unpacking php7.3-mysql (7.3.27-1~deb10u1) ...
+選取了原先未選的套件 php-mysql。
+正在準備解包 .../11-php-mysql_2%3a7.3+69_all.deb……
+Unpacking php-mysql (2:7.3+69) ...
+選取了原先未選的套件 php7.3-xml。
+正在準備解包 .../12-php7.3-xml_7.3.27-1~deb10u1_armhf.deb……
+Unpacking php7.3-xml (7.3.27-1~deb10u1) ...
+選取了原先未選的套件 php-xml。
+正在準備解包 .../13-php-xml_2%3a7.3+69_all.deb……
+Unpacking php-xml (2:7.3+69) ...
+選取了原先未選的套件 php-pear。
+正在準備解包 .../14-php-pear_1%3a1.10.6+submodules+notgz-1.1+deb10u2_all.deb……
+Unpacking php-pear (1:1.10.6+submodules+notgz-1.1+deb10u2) ...
+選取了原先未選的套件 php-php-gettext。
+正在準備解包 .../15-php-php-gettext_1.0.12-0.1_all.deb……
+Unpacking php-php-gettext (1.0.12-0.1) ...
+選取了原先未選的套件 php-phpseclib。
+正在準備解包 .../16-php-phpseclib_2.0.14-1_all.deb……
+Unpacking php-phpseclib (2.0.14-1) ...
+選取了原先未選的套件 php-tcpdf。
+正在準備解包 .../17-php-tcpdf_6.2.26+dfsg-1_all.deb……
+Unpacking php-tcpdf (6.2.26+dfsg-1) ...
+選取了原先未選的套件 php7.3-zip。
+正在準備解包 .../18-php7.3-zip_7.3.27-1~deb10u1_armhf.deb……
+Unpacking php7.3-zip (7.3.27-1~deb10u1) ...
+選取了原先未選的套件 php-zip。
+正在準備解包 .../19-php-zip_2%3a7.3+69_all.deb……
+Unpacking php-zip (2:7.3+69) ...
+選取了原先未選的套件 php7.1-common。
+正在準備解包 .../20-php7.1-common_7.1.20-1+b2_armhf.deb……
+Unpacking php7.1-common (7.1.20-1+b2) ...
+選取了原先未選的套件 php7.1-mcrypt。
+正在準備解包 .../21-php7.1-mcrypt_7.1.20-1+b2_armhf.deb……
+Unpacking php7.1-mcrypt (7.1.20-1+b2) ...
+選取了原先未選的套件 phpmyadmin。
+正在準備解包 .../22-phpmyadmin_4%3a4.6.6-5_all.deb……
+Unpacking phpmyadmin (4:4.6.6-5) ...
+設定 php-tcpdf (6.2.26+dfsg-1) ...
+設定 libzip4:armhf (1.5.1-4) ...
+設定 dbconfig-common (2.0.11+deb10u1) ...
+
+Creating config file /etc/dbconfig-common/config with new version
+設定 php7.3-bz2 (7.3.27-1~deb10u1) ...
+
+Creating config file /etc/php/7.3/mods-available/bz2.ini with new version
+設定 php-phpseclib (2.0.14-1) ...
+設定 php7.1-common (7.1.20-1+b2) ...
+
+Creating config file /etc/php/7.1/mods-available/calendar.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/ctype.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/exif.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/fileinfo.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/ftp.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/gettext.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/iconv.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/pdo.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/phar.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/posix.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/shmop.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/sockets.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/sysvmsg.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/sysvsem.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/sysvshm.ini with new version
+
+Creating config file /etc/php/7.1/mods-available/tokenizer.ini with new version
+設定 php7.3-mysql (7.3.27-1~deb10u1) ...
+
+Creating config file /etc/php/7.3/mods-available/mysqlnd.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/mysqli.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/pdo_mysql.ini with new version
+設定 php7.3-xml (7.3.27-1~deb10u1) ...
+
+Creating config file /etc/php/7.3/mods-available/dom.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/simplexml.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/wddx.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/xml.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/xmlreader.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/xmlwriter.ini with new version
+
+Creating config file /etc/php/7.3/mods-available/xsl.ini with new version
+設定 php7.3-zip (7.3.27-1~deb10u1) ...
+
+Creating config file /etc/php/7.3/mods-available/zip.ini with new version
+設定 libmcrypt4 (2.5.8-3.4) ...
+設定 php7.3-curl (7.3.27-1~deb10u1) ...
+
+Creating config file /etc/php/7.3/mods-available/curl.ini with new version
+設定 php7.3-gd (7.3.27-1~deb10u1) ...
+
+Creating config file /etc/php/7.3/mods-available/gd.ini with new version
+設定 php-xml (2:7.3+69) ...
+設定 php-curl (2:7.3+69) ...
+設定 php-pear (1:1.10.6+submodules+notgz-1.1+deb10u2) ...
+設定 php-mysql (2:7.3+69) ...
+設定 php-bz2 (2:7.3+69) ...
+設定 php7.1-mcrypt (7.1.20-1+b2) ...
+
+Creating config file /etc/php/7.1/mods-available/mcrypt.ini with new version
+設定 dbconfig-mysql (2.0.11+deb10u1) ...
+設定 php-php-gettext (1.0.12-0.1) ...
+設定 php-zip (2:7.3+69) ...
+設定 php-gd (2:7.3+69) ...
+設定 phpmyadmin (4:4.6.6-5) ...
+Determining localhost credentials from /etc/mysql/debian.cnf: succeeded.
+dbconfig-common: writing config to /etc/dbconfig-common/phpmyadmin.conf
+
+Creating config file /etc/dbconfig-common/phpmyadmin.conf with new version
+
+Creating config file /etc/phpmyadmin/config-db.php with new version
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO).
+unable to connect to mysql server.
+error encountered creating user:
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+dbconfig-common: phpmyadmin configure: trying again.
+dbconfig-common: writing config to /etc/dbconfig-common/phpmyadmin.conf
+Replacing config file /etc/dbconfig-common/phpmyadmin.conf with new version
+dbconfig-common: flushing administrative password
+apache2_invoke: Enable configuration phpmyadmin
+執行 hicolor-icon-theme (0.17-2) 的觸發程式……
+執行 libc-bin (2.28-10+rpi1) 的觸發程式……
+執行 libapache2-mod-php7.3 (7.3.27-1~deb10u1) 的觸發程式……
+執行 man-db (2.8.5-2) 的觸發程式……
+
+注意到後面 ERROR 1045 這個錯誤嗎? 這就是沒有事先授予 pi@localhost 帳號存取資料庫權限所致, 它會跳出一個視窗提示出現錯誤, 詢問要跳過還是 retry, 我只好另開一個終端機補做, 然後再選 retry 繼續安裝完成. 
+
+不過最後還會出現一個提示視窗詢問是否要進行資料庫設定 (不強制, 可事後做), 按預設否即可 :
+
+
+
+
+
+這是比前一篇多出來之處. 
+
+最後還要更改 Apache 2 的設定檔, 將 phpMyAdmin 的 Apache 設定檔匯進去, 用 nano 開啟 /etc/apace2/apache2.conf, 然後將下列指令貼到最後一行 : 
+
+Include /etc/phpmyadmin/apache.conf   
+
+pi@raspberrypi:~ $ sudo nano /etc/apache2/apache2.conf   
+
+
+
+
+
+按 Ctrol+O 存檔後再按 Ctrl+X 離開 nano 編輯器, 然後用下列指令重新啟動 Apache 2 伺服器 :
+
+pi@raspberrypi:~ $ sudo /etc/init.d/apache2 restart    
+[ ok ] Restarting apache2 (via systemctl): apache2.service.
+
+至此 phpMyAdmin 就安裝完畢了. 
+
+開啟瀏覽器輸入網址 http://127.0.0.1/phpmyadmin 顯示 phpMyAdmin 網頁 :
+
+
+
+
+
+使用 root 或上面新增的樹莓派預設此用者帳號 pi 都可以登入 :
+
+
+
+
+
+OK, 大功告成啦! 
+
+用 df -h 看看用掉多少 SD 卡空間 :
+
+pi@raspberrypi:~ $ df -h   
+檔案系統        容量  已用  可用 已用% 掛載點
+/dev/root        29G  8.7G   19G   32% /
+devtmpfs        183M     0  183M    0% /dev
+tmpfs           216M   12M  204M    6% /dev/shm
+tmpfs           216M  5.9M  210M    3% /run
+tmpfs           5.0M  4.0K  5.0M    1% /run/lock
+tmpfs           216M     0  216M    0% /sys/fs/cgroup
+/dev/mmcblk0p1  253M   48M  205M   19% /boot
+tmpfs            44M  4.0K   44M    1% /run/user/1000
+
+與前一篇的 7.6GB 相比多出 1.1GB, 也就是 Apache 2 + PHP + MariaDB 用掉了 1.1GB 左右.
+
+
+2021-05-22 補充 :
+
+昨天安裝 WordPress 找到兩篇文章寫得很棒, 值得參考 :
+
+# Raspberry Pi 筆記(60)：安裝Apache Web Server及PHP
+# Raspberry Pi 筆記(61)：安裝MySQL(MariaDB)資料庫及管理工具Adminer

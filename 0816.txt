@@ -29,8 +29,7 @@ wget https://files.phpmyadmin.net/phpMyAdmin/5.1.1/phpMyAdmin-5.1.1-all-language
 2. 解壓縮 phpMyAdmin : 
 
 下載完畢後用 unzip 指令解壓縮此 zip 檔 : 
-
-pi@raspberrypi:~ $ unzip phpMyAdmin-5.1.1-all-languages.zip     
+unzip phpMyAdmin-5.1.1-all-languages.zip     
 
 檢視目錄可知解壓縮後結果是一個與主檔名相同之目錄 : 
 
@@ -45,4 +44,4 @@ pi@raspberrypi:~ $ mv phpmyadmin /var/www/html
 3. 登入 phpMyAdmin : 
 
 在瀏覽器網址列輸入 127.0.0.1/phpmyadmin 即可看到登入頁面, 
-打開瀏覽器輸入:localhost/phpmyadmin/
+打開瀏覽器輸入:localhost/phpmyadmin/index.php
