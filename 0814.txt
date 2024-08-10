@@ -1,5 +1,7 @@
 MQTT 通訊協定
 
+https://mqtt-explorer.com/  windows 介面
+
 https://github.com/roberthsu2003/raspberry/tree/master/%E7%9B%AE%E9%8C%84/mqtt
 
 
@@ -69,8 +71,10 @@ include_dir /etc/mosquitto/conf.d
 #新增的設定
 #監聽1883port
 #允許匿名發佈
-￼listener 1883 
+
+listener 1883 
 allow_anonymous true
+
 2. 以下為需要密碼的操作方式
 #原本的設定
 pid_file /run/mosquitto/mosquitto.pid
