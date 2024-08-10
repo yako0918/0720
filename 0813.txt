@@ -1,4 +1,5 @@
 Raspberry Pi 筆記(60)：安裝Apache Web Server及PHP
+
 在將 Apache 安裝在 Raspberry Pi 之前，需使用以下兩個指
 令來確保系統更新到最新。
 $ sudo apt-get update && sudo apt-get upgrade 
@@ -6,7 +7,8 @@ $ sudo apt-get update && sudo apt-get upgrade
 要安裝 Apache2，
 
 請在終端機輸入以下指令：
-$ sudo apt-get install apache2 -y要檢查 Apache 是​​否已啟動
+$ sudo apt-get install apache2 -y
+要檢查 Apache 是​​否已啟動
 並正在運行，可以在Web 瀏覽器中輸入Raspberry Pi 的 IP 地址，
 如果服務正常，會回應一個帶有簡單文字的網頁
 
@@ -46,3 +48,42 @@ $ sudo nano /var/www/html/testphp.php
 echo "Today's date is ".date('Y-m-d H:i:s');
 
 用Web 瀏覽器連線 Raspberry Pi 的 IP
+=================
+<?php
+// 獲取用戶的 IP 地址
+function getUserIP() {
+    // 檢查是否通過代理伺服器（如負載平衡器）訪問
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        // 代理伺服器下的 IP 地址
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        // 轉發的 IP 地址（可能有多個，取第一個）
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        // 默認的 IP 地址
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    
+    return $ip;
+}
+
+// 顯示用戶的 IP 地址
+echo '用戶的 IP 地址是: ' . getUserIP();
+?>
+
+==========================
+要用 PHP 取得用戶的 IP 十分容易，只要用 $_SERVER[‘REMOTE_ADDR’] 變數就可以知道用戶的 IP，但如果用戶使用了 proxy server 上網的話，$_SERVER[‘REMOTE_ADDR’] 只會得到 proxy 的 IP 地址。
+
+以下方法會使用 $_SERVER[“HTTP_CLIENT_IP”] 及 $_SERVER[“HTTP_X_FORWARDED_FOR”] 解決這個問題
+==========================
+<?php
+if (!empty($_SERVER["HTTP_CLIENT_IP"])){
+    $ip = $_SERVER["HTTP_CLIENT_IP"];
+}elseif(!empty($_SERVER["HTTP_X_FORWARDED_FOR"])){
+    $ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+}else{
+    $ip = $_SERVER["REMOTE_ADDR"];
+}
+     
+echo $ip;
+?>
