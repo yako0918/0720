@@ -1,0 +1,2 @@
+硬體模擬 FRITZING
+https://github.com/Move2win/Fritzing-0.9.9.64.pc-Compiled-Build
