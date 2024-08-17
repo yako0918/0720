@@ -1,0 +1,39 @@
+# 使用Git一起工作
+# https://github.com/roberthsu2003/git/blob/main/README.md
+#
+# https://github.com/roberthsu2003/git/tree/main/%E4%B8%8D%E6%83%B3%E8%A2%AB%E8%BF%BD%E8%B9%A4%E7%9A%84%E6%AA%94%E6%A1%88
+#
+安裝 虛擬環境變數 
+
+requirements.txt 下 加入模組
+python-dotenv #模組=虛擬環境變數
+======================
+建立檔案
+目錄下//.env
+======================
+檔案內容  具機密性
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=raspberry
+MQTT_SERVER=127.0.0.1
+===================
+不讓 github 上傳，需建一資料夾
+目錄下//.gitignore
+
+========================
+檔案內容 建立.gitignore清單
+.env
+
+不上傳的  機密檔案
+==========================
+程式呼叫
+
+from dotenv import load_dotenv
+import os
+load_dotenv()
+改成下列
+redis_conn = redis.Redis(host=os.environ['REDIS_HOST'], port=6379,password=os.environ['REDIS_PASSWORD'])
+//////
+ client.connect(os.environ['MQTT_SERVER'])
+
+ ===============================
+
