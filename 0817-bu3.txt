@@ -1,5 +1,5 @@
 #
-#
+#聯網 mqtt 傳送訊息 
 #
 import signal
 from gpiozero import Button,LED

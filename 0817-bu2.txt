@@ -1,5 +1,5 @@
 #
-#
+# 單機驗證
 import signal
 from gpiozero import Button,LED
 from datetime import datetime
