@@ -13,8 +13,11 @@ python-dotenv #模組=虛擬環境變數
 ======================
 檔案內容  具機密性
 REDIS_HOST=127.0.0.1
-REDIS_PASSWORD=raspberry
+REDIS_PASSWORD=1234
 MQTT_SERVER=127.0.0.1
+RENDER_REDIS=rediss://red-cr056rdumphs7390s8ig:iM9iTA0uJB1vkGv2GEFJVE470yIsA0Wn@singapore-redis.render.com:6379
+
+
 ===================
 不讓 github 上傳，需建一資料夾
 目錄下//.gitignore
