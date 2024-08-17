@@ -4,6 +4,8 @@ Raspberry Pi 筆記(60)：安裝Apache Web Server及PHP
 令來確保系統更新到最新。
 $ sudo apt-get update 
   sudo apt-get upgrade 
+  sudo apt upgrade -y 
+
 
 要安裝 Apache2，
 
