@@ -7,3 +7,8 @@ while True:
         print("button is up")
     else:
         print("button is don")
+
+
+        from gpiozero import Button
+
+,,,
