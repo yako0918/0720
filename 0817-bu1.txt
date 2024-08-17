@@ -1,0 +1,11 @@
+# 按下開關 ping 18 顯示狀態
+
+from gpiozero import Button
+
+button = Button(pin=18)
+
+while True:
+    if button.is_pressed:
+        print("Button is pressed   按下")
+    else:
+        print("Button is not pressed   放開")
